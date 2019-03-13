@@ -1,0 +1,2 @@
+
+import { MineflayerBot } from '../../../bot';

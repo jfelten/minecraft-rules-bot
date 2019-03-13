@@ -1,0 +1,9 @@
+{
+    "rules": {
+        "arrow-parens": false,
+        "no-console": false
+    },
+    "linterOptions": {
+        "format": "stylish"
+    }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "minecraftbots",
+  "version": "0.0.1",
+  "description": "bots for minecraft",
+  "main": "index.ts",
+  "keywords": [
+    "minecraft",
+    "bots"
+  ],
+  "author": "jfelten",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc -p ./tsconfig.json",
+    "test": "NODE_ENV=test jasmine-ts --config=./test/unit/jasmine.json",
+    "coverage": "TS_NODE_COMPILER_OPTIONS='{\"target\":\"es6\"}' ./node_modules/.bin/nyc npm run test",
+    "static-analysis": "./node_modules/.bin/tslint -c tslint.json -p ./tsconfig.tslint.json && ./node_modules/.bin/tslint -c ./node_modules/@hbo/tslint-config/secrets-only.json $(git ls-tree -r HEAD --name-only | grep '\\.json$')"
+  },
+  "dependencies": {
+    "@types/request": "^2.48.1",
+    "durable": "^0.36.92",
+    "fs": "0.0.1-security",
+    "mineflayer": "^2.7.5",
+    "request": "^2.88.0",
+    "typescript": "^3.3.3333"
+  }
+}
