@@ -27,11 +27,9 @@ export class RulesEngine {
   private botEventRules: string[] = ['src/rules/bot-events'];
   private actionsRules: string[] = ['src/rules/actions'];
 
-  private bot: MineflayerBot;
   private durable: any = require('durable');
 
-  constructor(mineflayerBot: MineflayerBot) {
-    this.bot = mineflayerBot;
+  constructor() {
   }
 
   private loadRules(directory: string) {
@@ -43,7 +41,7 @@ export class RulesEngine {
         console.log(item)
         const actions = require(`${itemFullPath}/actions`);
         const rule = require(`${itemFullPath}/rules`);
-        this.loadRule(this.bot, this.durable, rule);
+        this.loadRule(this.durable, rule);
       }
 
 
@@ -92,18 +90,8 @@ export class RulesEngine {
           }
       );
   }
-  private loadRule(bot: MineflayerBot, durable: any, rule: IRule) {
+  private loadRule(durable: any, rule: IRule) {
     rule.load(durable);
-    // bot.on(rule.eventName, function(username, message) {
-    //   if (username === bot.username) return;
-    //   fireRule(rule.eventName, 'event', {event: rule.eventName, username, message});
-    //   getFact(rule.eventName, 'event', data,)
-    // });
-  }
-
-
-  private loadActions(action: IActionSet) {
-
   }
 
 

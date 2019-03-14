@@ -1,7 +1,7 @@
 import { MineflayerBot } from '../../../bot';
 
 function annouce(bot: MineflayerBot) {
-  bot.chat('Hello!! I am here to help.  Command me.')
+  bot.actions.chat('Hello!! I am here to help.  Command me.')
 }
 
 

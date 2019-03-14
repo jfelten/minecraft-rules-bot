@@ -1,15 +1,16 @@
 import { IActionSet } from '../../'
+import { IWindow } from '../../../bot/types';
 import { MineflayerBot } from '../../../bot';
 
 
-export class VilagersAction implements IActionSet {
+export class VillagersAction implements IActionSet {
 
   public ruleSetName: string = 'trade';
   public getActions(): Function[] {
     return [
-      VilagersAction.showVillagers,
-      VilagersAction.showInventory,
-      VilagersAction.hasResources,
+      VillagersAction.showVillagers,
+      VillagersAction.showInventory,
+      VillagersAction.hasResources,
     ];
   }
 
@@ -26,7 +27,7 @@ export class VilagersAction implements IActionSet {
     const mcdata = require('minecraft-data')(bot.getVersion( ));
     bot.getInventory().slots
       .filter((item: any) => item).forEach((item: any) => {
-        bot.chat(VilagersAction.stringifyItem(item, mcdata))
+        bot.actions.chat(VillagersAction.stringifyItem(item, mcdata))
       })
   }
 
@@ -42,10 +43,10 @@ export class VilagersAction implements IActionSet {
 
   private static stringifyTrades (trades: any[], mcdata: any): string[] {
     return trades.map((trade) => {
-      let text = VilagersAction.stringifyItem(trade.firstInput, mcdata);
-      if (trade.secondaryInput) text += ` & ${VilagersAction.stringifyItem(trade.secondaryInput, mcdata)}`
+      let text = VillagersAction.stringifyItem(trade.firstInput, mcdata);
+      if (trade.secondaryInput) text += ` & ${VillagersAction.stringifyItem(trade.secondaryInput, mcdata)}`
       if (trade.disabled) text += ' x '; else text += ' » '
-      text += VilagersAction.stringifyItem(trade.output, mcdata)
+      text += VillagersAction.stringifyItem(trade.output, mcdata)
       return `(${trade.tooluses}/${trade.maxTradeuses}) ${text}`
     })
   }

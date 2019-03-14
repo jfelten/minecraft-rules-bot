@@ -1,24 +1,29 @@
 import mineflayer = require('mineflayer');
 
+import { Consciousness } from './consciousness';
+import { ExecutiveFunction } from './executive-function';
+import { SensoryInputs } from './sensory-inputs';
+
 import { IBlock, IEntity, IPoint, IWindow } from './types'
 
-import ( RulesEngine ) from '../rules';
+import { RulesEngine } from '../rules';
+
 
 
 export class MineflayerBot {
 
-  private bot: mineflayer;
-  private executiveFunction: ExecutiveFunction;
+  private bot: any;
   private sensoryInputs: SensoryInputs;
   private consciousness: Consciousness;
 
   private brain: RulesEngine;
 
-  constructor(botConfig: any, rulesEngine: RulesEngine) {
-    this.bot = mineflayer.createBot(botConfig);
-    console.log(`connected to ${config.host}`);
+  public actions: ExecutiveFunction;
 
-    this.executiveFunction = new ExecutiveFunction(this.bot, this. brain);
+  constructor(mineflayer: any, rulesEngine: RulesEngine) {
+    this.bot = mineflayer;
+    this.brain = rulesEngine;
+    this.actions = new ExecutiveFunction(this.bot, this. brain);
     this.sensoryInputs = new SensoryInputs(this.bot, this.brain);
     this.consciousness = new Consciousness(this.bot, this.brain);
 

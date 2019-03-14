@@ -2,19 +2,21 @@ import mineflayer = require('mineflayer');
 
 import { IBlock, IEntity, IPoint, IWindow } from './types';
 
-import ( RulesEngine ) from '../rules';
+import { IActionSet, RulesEngine } from '../rules';
+
+import fs = require('fs');
 
 /*
  * Represents base actions a bot can do
  */
 export class ActionLoader {
 
-  private bot: mineflayer;
-  private brain: rulesEngine;
+  private bot: any;
+  private brain: RulesEngine;
 
-  constructor(mineFlayerApi: mineflayer, rulesEngine: RulesEngine) {
+  constructor(mineflayerApi: any, rulesEngine: RulesEngine) {
     this.bot = mineflayerApi;
-    this.brain = RulesEngine;
+    this.brain = rulesEngine;
   }
 
   public loadActionSet(action: IActionSet) {
