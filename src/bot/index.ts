@@ -29,6 +29,10 @@ export class MineflayerBot {
 
   }
 
+  public entities(): IEntity[] {
+    return this.bot.entities;
+  }
+
   public getVersion(): number {
     return this.bot.version;
   }

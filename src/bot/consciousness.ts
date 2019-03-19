@@ -1,36 +1,19 @@
-import mineflayer = require('mineflayer');
+import * as mineflayer from 'mineflayer';
 
 import { IBlock, IEntity, IPoint, IWindow } from './types'
 
-import { RulesEngine } from '../rules';
+import {Vec3} from 'vec3';
 
-import fs = require('fs');
+import { RulesEngine } from '../rules';
 
 /*
  * Represents awareness of game state.  Monitors blocks in field of vision. state of all blocks and entities in the bot's field of vision
  */
 export class Consciousness {
 
-  private cycleInterval: number = 1000; //ms
+  private cycleInterval: number = 10000; //ms
 
-  private unit: IPoint[] = [
-    new mineflayer.Point(-1,  0,  0),
-    new mineflayer.Point( 1,  0,  0),
-    new mineflayer.Point( 0,  1,  0),
-    new mineflayer.Point( 0, -1,  0),
-    new mineflayer.Point( 0,  0,  1),
-    new mineflayer.Point( 0,  0, -1),
-  ];
-
-  private zeroed: IPoint[] = [
-        new mineflayer.Point(0, 1, 1),
-        new mineflayer.Point(0, 1, 1),
-        new mineflayer.Point(1, 0, 1),
-        new mineflayer.Point(1, 0, 1),
-        new mineflayer.Point(1, 1, 0),
-        new mineflayer.Point(1, 1, 0),
-  ];
-  private awarenessRange: number = 16;
+  private awarenessRange: number = 2;
   private bot: any;
   private brain: RulesEngine;
 
@@ -42,8 +25,12 @@ export class Consciousness {
     }
 
     setInterval( () => {
-      const currentState = this.scan();
-      this.brain.postData('consciousness', 'fact', currentState);
+      if (this.bot.entity && this.bot.entity.position) {
+        const currentState = this.scan();
+        this.brain.postData('consciousness', 'fact', currentState);
+      } else {
+        console.log(this.bot);
+      }
 
     }, this.cycleInterval);
   }
@@ -53,31 +40,37 @@ export class Consciousness {
    */
   public scan(): IBlock[][][] {
 
-    const entities: IEntity[] = this.bot.entities();
-    const point: IPoint = this.bot.entity.position();
+    const location: any = this.bot.entity.position;
 
     const blockData: IBlock[][][] = new Array();
     //scan block area
-    for (let apothem = 1; apothem <= this.awarenessRange; apothem++) {
-        for (let side = 0; side < 6; side++) {
-            const max = this.zeroed[side].scaled(2 * apothem);
-            if (max.y > 127) {
-                max.y = 127;
-            } else if (max.y < 0) {
-                max.y = 0;
-            }
-            const pt: any = {};
-            for (pt.x = 0; pt.x <= max.x; pt.x++) {
-                for (pt.y = 0; pt.y <= max.y; pt.y++) {
-                    for (pt.z = 0; pt.z <= max.z; pt.z++) {
-                        var offset = pt.minus(max.scaled(0.5).floored()).plus(this.unit[side].scaled(apothem));
-                        var abs_coords = point.plus(offset);
-                        const block: IBlock = mineflayer.blockAt(abs_coords);
-                        blockData[pt.x][pt.y][pt.z] = block;
-                    }
-                }
-            }
+
+    const startingX: number  = location.x-this.awarenessRange;
+    const startingY: number = location.y-this.awarenessRange;
+    const startingZ: number = location.z-this.awarenessRange;
+    const endingX: number  = location.x+this.awarenessRange;
+    const endingY: number = location.y+this.awarenessRange;
+    const endingZ: number = location.z+this.awarenessRange;
+
+
+    let xIndex: number = 0;
+    let yIndex: number = 0;
+    let zIndex: number = 0;
+    for (let xPos = startingX; xPos <= endingX; xPos++) {
+      blockData[xIndex] = new Array();
+      yIndex = 0;
+      for (let yPos = startingY; yPos <= endingY; yPos++) {
+        blockData[xIndex][yIndex] = new Array();
+        zIndex = 0;
+        for (let zPos= startingZ; zPos<= endingZ; zPos++) {
+            const blockCoord = new Vec3(xPos, yPos, zPos);
+            const block: IBlock = this.bot.blockAt(blockCoord);
+            blockData[xIndex][yIndex][zIndex] = block;
+            zIndex++;
         }
+        yIndex++
+      }
+      xIndex++;
     }
 
     return blockData;

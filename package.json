@@ -18,10 +18,13 @@
   },
   "dependencies": {
     "@types/request": "^2.48.1",
+    "@types/vec3": "0.0.29",
     "durable": "^0.36.92",
     "fs": "0.0.1-security",
     "mineflayer": "^2.7.5",
     "request": "^2.88.0",
-    "typescript": "^3.3.3333"
+    "ts-node": "^8.0.3",
+    "typescript": "^3.3.3333",
+    "vec3": "^0.1.3"
   }
 }

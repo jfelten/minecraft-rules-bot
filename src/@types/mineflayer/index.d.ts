@@ -4,5 +4,8 @@ declare module 'mineflayer' {
 
   const mineflayer: Mineflayer;
 
+  const Point: mineflayer.Point;
+
   export = mineflayer;
+
 }

@@ -12,9 +12,29 @@ export class ExecutiveFunction {
   private bot: any;
   private brain: RulesEngine;
 
+  private cycleInterval: number = 10000; //ms
+
   constructor(mineflayerApi: any, rulesEngine: RulesEngine) {
     this.bot = mineflayerApi;
     this.brain = rulesEngine;
+
+
+    setInterval( () => {
+      if (this.bot.entity && this.bot.entity.position) {
+        const actionsData: any = this.brain.getData('actions', 'fact', currentState);
+        for (const action of actionData) {
+          performAction(action);
+        }
+
+      } else {
+        console.log(this.bot);
+      }
+
+    }, this.cycleInterval);
+  }
+
+  public performAction(action: IAction) {
+
   }
 
   public end() {

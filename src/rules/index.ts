@@ -65,7 +65,7 @@ export class RulesEngine {
 
   public postData(eventName: string, type: string, data: any): Promise<any> {
       var request = require('request');
-      console.log('posting to rules engine')
+      //console.log('posting to rules engine')
       return request.post(
           `http://${this.host}:${this.port}/${eventName}/${type}`,
           { json: data },
@@ -80,12 +80,12 @@ export class RulesEngine {
 
   public getData(eventName: string, type: string): Promise<any> {
       var request = require('request');
-      console.log('posting to rules engine')
+      //console.log('getting data from rules engine')
       return request.get(
           `http://${this.host}:${this.port}/${eventName}/${type}`,
           function (error: Error, response: any, body: any) {
               if (!error && response.statusCode == 200) {
-                  console.log(body)
+                  //console.log(body)
               }
           }
       );
