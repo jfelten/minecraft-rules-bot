@@ -10,9 +10,9 @@ brain.start();
 
 
 const mf = mineflayer.createBot({
-  host: "keyporttech.com", // optional
+  host: "host", // optional
   port: 25565,       // optional
-  username: "diggerBot2000", // email and password are required only for
+  username: botNAme", // email and password are required only for
   // password: "12345678",          // online-mode=true servers
   verbose: true
 });
